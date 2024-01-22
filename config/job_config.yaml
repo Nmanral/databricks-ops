@@ -1,0 +1,32 @@
+default-settings: &default-settings
+  email_on_failure:
+    - "abc@example.com"
+  email_on_scucess:
+    - "abc1@example.com"
+  tasktype: "PYTHON"
+  gcp_connection:
+    project_id: "my-test-project"
+    service_account_email: "test-workflow-account@my-test-project.iam.gserviceaccount.com"
+    service_account_private_key: "test-private-key"
+    service_account_private_key_id: "test-private-key-id"
+  libraries:
+    - whl: "s3://test-bucket/data_tools-0.0.4-py3-none-any.whl"
+
+
+workflow-api:
+  job_name: "test-api-job"
+  schedule: "00 00 03 * * ?"
+  tasks:
+    - <<: *default-settings
+      task_name: "api"
+      filepath: "project/testing/main.py"
+      cluster_config_path: "project/testing/test_api_cluster.json" 
+    - <<: *default-settings
+      task_name: "api2"
+      filepath: "project/testing/main.py"
+      cluster_config_path: "project/testing/test_api_cluster.json"
+      depends_on:
+        - "api"
+      libraries:
+        - pypi: 
+            package: "google-cloud-bigquery==1.25.0"

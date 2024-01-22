@@ -1,0 +1,65 @@
+{
+    "metadata": {
+        "version": "1.14",
+        "timestamp": "2024-01-19 09:30:34"
+    },
+    "config": {
+        "workflow-commercial": {
+            "name": "workflow-commercial",
+            "email_notifications": {
+                "on_success": [],
+                "on_failure": [
+                    "abc@example.com"
+                ]
+            },
+            "webhook_notifications": {},
+            "timeout_seconds": 0,
+            "schedule": {
+                "quartz_cron_expression": "",
+                "timezon_id": "Europe/London",
+                "pause_status": "UNPAUSED"
+            },
+            "max_concurrent_runs": 1,
+            "tasks": [
+                {
+                    "spark_python_task": {
+                        "python_file": "filepath",
+                        "parameters": []
+                    },
+                    "task_key": "test-commercial",
+                    "new_cluster": {
+                        "spark_version": "13.3.x-cpu-ml-scala2.12",
+                        "spark_conf": {
+                            "spark.hadoop.google.cloud.auth.service.account.enable": "true",
+                            "spark.hadoop.fs.gs.auth.service.account.email": "account_email",
+                            "spark.hadoop.fs.gs.project.id": "project_id",
+                            "spark.hadoop.fs.gs.auth.service.account.private.key": "{{secrets/scope/service_account_private_key}}",
+                            "spark.hadoop.fs.gs.auth.service.account.private.key.id": "{{secrets/scope/service_account_private_id}}"
+                        },
+                        "aws_attributes": {}
+                    },
+                    "libraries": [
+                        {
+                            "whl": "s3://test-bucket/data_tools-0.0.4-py3-none-any.whl"
+                        }
+                    ],
+                    "timeout_seconds": 0,
+                    "email_notifications": {
+                        "on_success": [],
+                        "on_failure": [
+                            "abc@example.com"
+                        ]
+                    }
+                }
+            ],
+            "format": "MULTI_TASK",
+            "access_control_list": [
+                {
+                    "group_name": "groupname",
+                    "permission_level": "CAN_MANAGE"
+                }
+            ],
+            "job_id": 1234456788734
+        }
+    }
+}
